@@ -8,7 +8,9 @@ def binary_search(arr: list, item: int) -> int:
         guess = arr[mid]
 
         if guess == item:
-            return guess
+            # i don't why everyone put mid in here
+            # it can be item, guess, and mid
+            return mid
 
         if guess > item:
             high = mid - 1
@@ -16,6 +18,10 @@ def binary_search(arr: list, item: int) -> int:
         else:
             low = mid + 1
     return None
+
+
+x = [1, 2, 3, 4, 5]
+print(binary_search(x, 2))
 
 
 def binary_recursive(arr: list, low: int, high: int, item: int) -> int:
@@ -34,5 +40,6 @@ def binary_recursive(arr: list, low: int, high: int, item: int) -> int:
     return None
 
 
-x = [1, 2, 3, 4, 5]
-print(binary_recursive(x, 0, len(x), 5))
+# print(binary_search(x, 0, len(x), 5))
+# print(binary_search(x, 2))
+#
