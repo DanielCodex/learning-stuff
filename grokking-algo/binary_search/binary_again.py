@@ -33,8 +33,6 @@ x = [1, 2, 3, 4, 5, 6]
 
 
 def binary_with_recursion(arr: list, low: int, high: int, item: int) -> int:
-    low = 0
-    high = len(arr) - 1
 
     if low <= high:
         mid = (low + high) // 2
@@ -42,13 +40,12 @@ def binary_with_recursion(arr: list, low: int, high: int, item: int) -> int:
 
         if guess == item:
             return mid
-
-        if guess > item:
+        elif guess > item:
             return binary_with_recursion(arr, low, mid - 1, item)
         else:
             return binary_with_recursion(arr, mid + 1, high, item)
-
-    return None
+    else:
+        return None
 
 
 print(binary_with_recursion(x, 0, len(x), 4))
