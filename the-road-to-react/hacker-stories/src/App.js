@@ -22,22 +22,35 @@ function App() {
     },
   ];
 
-  const handleChange = (event) => {
-    console.log(event.target.value);
+  const [searchTerm, setSearchTerm] = useState("");
+
+  const handleSearch = (event) => {
+    setSearchTerm(event.target.value);
   };
 
+  const searchedStories = stories.filter((item) => {
+    return item.title.toLowerCase().includes(searchTerm.toLowerCase());
+  });
   return (
     <div className="App">
       <h1>hello there</h1>
 
-      <label htmlFor="search">Search: </label>
-      <input type="text" id="search" onChange={handleChange} />
+      <Search onSearch={handleSearch} />
 
       <hr />
-      <List list={stories} />
+      <List list={searchedStories} />
     </div>
   );
 }
+
+const Search = (props) => {
+  return (
+    <div>
+      <label htmlFor="search">Search: </label>
+      <input type="text" id="search" onChange={props.onSearch} />
+    </div>
+  );
+};
 
 const List = ({ list }) => {
   return list.map((item) => {
