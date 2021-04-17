@@ -1,4 +1,3 @@
-// import logo from "./logo.svg"; // import { useState } from "react";
 import { useState } from "react";
 import "./App.css";
 
@@ -35,7 +34,7 @@ function App() {
     <div className="App">
       <h1>hello there</h1>
 
-      <Search onSearch={handleSearch} />
+      <Search onSearch={handleSearch} search={searchTerm} />
 
       <hr />
       <List list={searchedStories} />
@@ -47,7 +46,12 @@ const Search = (props) => {
   return (
     <div>
       <label htmlFor="search">Search: </label>
-      <input type="text" id="search" onChange={props.onSearch} />
+      <input
+        type="text"
+        id="search"
+        onChange={props.onSearch}
+        value={props.search}
+      />
     </div>
   );
 };
