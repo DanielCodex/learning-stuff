@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import "./App.css";
 
 function App() {
@@ -21,18 +21,10 @@ function App() {
     },
   ];
 
-  // good shit
-  const [searchTerm, setSearchTerm] = useState(
-    localStorage.getItem("search") || "React"
-  );
-
-  useEffect(() => {
-    localStorage.setItem("search", searchTerm);
-  }, [searchTerm]);
+  const [searchTerm, setSearchTerm] = useState("");
 
   const handleSearch = (event) => {
     setSearchTerm(event.target.value);
-    // localStorage.setItem("search", event.target.value);
   };
 
   const searchedStories = stories.filter((item) => {
@@ -60,17 +52,34 @@ const Search = ({ search, onSearch }) => {
   );
 };
 
-const List = ({ list }) =>
-  list.map((item) => <Item key={item.objectID} item={item} />);
+// const List = ({ list }) => {
+//   return list.map((item) => {
+//     return (
+//       <div key={item.objectID}>
+//         <span>
+//           <a href={item.url}>{item.title}</a>
+//         </span>
+//         <span>{item.author}</span>
+//         <span>{item.num_comments}</span>
+//         <span>{item.points}</span>
+//       </div>
+//     );
+//   });
+// };
 
-const Item = ({ item }) => (
-  <div key={item.objectID}>
+// i think this the most concise way, but i don't think
+// everybody are aware about this fearture in JS
+const List = ({ list }) =>
+  list.map(({ objectID, ...item }) => <Item key={objectID} {...item} />);
+
+const Item = ({ title, url, author, num_comments, points }) => (
+  <div>
     <span>
-      <a href={item.url}>{item.title}</a>
+      <a href={url}>{title}</a>
     </span>
-    <span>{item.author}</span>
-    <span>{item.num_comments}</span>
-    <span>{item.points}</span>
+    <span>{author}</span>
+    <span>{num_comments}</span>
+    <span>{points}</span>
   </div>
 );
 
