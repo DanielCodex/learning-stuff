@@ -1,16 +1,16 @@
 import React, { useEffect, useRef, useState } from "react";
 
 function App() {
-  const [toggle, setToggle] = useState(true);
+  const [timer, setTimer] = useState(0);
 
-  const handleToggle = () => {
-    setToggle(!toggle);
-  };
-  return (
-    <div>
-      <Toggler toggle={toggle} onToggle={handleToggle} />
-    </div>
-  );
+  useEffect(() => {
+    const interval = setTimeout(
+      () => setTimer((currentTimer) => currentTimer + 1),
+      1000
+    );
+    return () => clearInterval(interval);
+  }, [timer]);
+  return <div>{timer}</div>;
 }
 
 const Toggler = ({ toggle, onToggle }) => {
@@ -19,11 +19,17 @@ const Toggler = ({ toggle, onToggle }) => {
   const handleChange = (e) => {
     setTitle(e.target.value);
   };
-  // if you want to control what to render when you want, you
+  // we can use, useRef to run useEffect whenever some update happened
+  const didMount = useRef(false);
   useEffect(() => {
-    // this function will be render on every render
-    console.log("i run only if toggle changes (and on mount)");
-    // now this part makes sense
+    if (didMount.current) {
+      return;
+    }
+
+    if (toggle === false) {
+      console.log("i run only once if toggle is false.");
+      didMount.current = true;
+    }
   }, [toggle]);
 
   return (
