@@ -17,8 +17,9 @@ const todoReducer = (state, action) => {
   switch (action.type) {
     case "do_todo":
       return state.map((item) => {
+        // console.log(item);
+        console.log("hell");
         if (item.id === action.id) {
-          console.log(item);
           return { ...item, complete: true };
         } else {
           return item;
@@ -26,36 +27,64 @@ const todoReducer = (state, action) => {
       });
     case "undo_todo":
       return state.map((item) => {
-        if (item.id === action.id) {
-          return { ...item, complete: false };
-        } else {
-          return item;
-        }
+        console.log(item.id);
+        return item.id === action.id ? { ...item, complete: false } : item;
       });
     default:
       return state;
   }
 };
 
+// const todoReducer = (state, action) => {
+//   switch (action.type) {
+//     case "DO_TODO":
+//       return state.map((todo) => {
+//         console.log(todo);
+//         if (todo.id === action.id) {
+//           return { ...todo, complete: true };
+//         } else {
+//           return todo;
+//         }
+//       });
+//     case "UNDO_TODO":
+//       return state.map((todo) => {
+//         if (todo.id === action.id) {
+//           return { ...todo, complete: false };
+//         } else {
+//           return todo;
+//         }
+//       });
+//     default:
+//       return state;
+//   }
+// };
+
 function App() {
-  const [todos, dispatch] = useReducer(todoReducer, initialTodos);
-  const handleClick = (todo) => {
-    dispatch({ type: "do_todo", id: todo.id });
+  const [todos, dispatch] = React.useReducer(todoReducer, initialTodos);
+
+  // this bro is a completely different shit
+  const handleChange = (todo) => {
+    dispatch({
+      type: todo.complete ? "undo_todo" : "do_todo",
+      id: todo.id,
+    });
   };
+
   return (
     <div>
       {todos.map((item) => {
         return (
-          <li key={item.id}>
-            <label>
+          <label>
+            <li key={item.id}>
               <input
+                // this line and () => handleChange(item) both works?
                 type="checkbox"
-                defaultChecked={item.complete}
-                onClick={() => handleClick(item)}
+                checked={item.complete}
+                onChange={() => handleChange(item)}
               />
               {item.task}
-            </label>
-          </li>
+            </li>
+          </label>
         );
       })}
     </div>
