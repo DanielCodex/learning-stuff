@@ -1,8 +1,8 @@
+import userEvent from "@testing-library/user-event";
 import React, { useReducer, useState } from "react";
 
 const initialState = { count: 0, age: 23 };
-
-const countReducer = (state, action) => {
+const todoReducer = (state, action) => {
   switch (action.type) {
     case "inc":
       return { ...state, count: state.count + 1 };
@@ -13,25 +13,18 @@ const countReducer = (state, action) => {
   }
 };
 
+// doing all of this in reducer. it's not always necessary
 function App() {
-  const [state, dispatch] = useReducer(countReducer, initialState);
-  const increaseValue = () => {
-    dispatch({ type: "inc" });
-    // setCount(count + 1);
-  };
-  const decreaseValue = () => {
-    dispatch({ type: "dec" });
-    // setCount(count - 1);
-  };
+  const [counter, dispatch] = useReducer(todoReducer, initialState);
   return (
     <div>
-      <h1>{state.count}</h1>
-      <h2>{state.age}</h2>
-      <button type="button" onClick={increaseValue}>
-        increase
+      <h1>{counter.count}</h1>
+      <h1>{counter.age}</h1>
+      <button type="button" onClick={() => dispatch({ type: "inc" })}>
+        inc
       </button>
-      <button type="button" onClick={decreaseValue}>
-        decrease
+      <button type="button" onClick={() => dispatch({ type: "dec" })}>
+        inc
       </button>
     </div>
   );
