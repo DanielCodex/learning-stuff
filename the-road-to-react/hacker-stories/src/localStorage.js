@@ -1,26 +1,23 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./localStorage.css";
 
 function App() {
-  const [query, setQuery] = useState(localStorage.getItem("search") || "react");
+  const [item, setItem] = useState(localStorage.getItem("Search") || "react");
+
+  // this bro is out of control, we should be carefull
+  useEffect(() => {
+    localStorage.setItem("Search", item);
+  }, [item]);
 
   const handleChange = (e) => {
-    const { value } = e.target;
-    setQuery(value);
-    localStorage.setItem("search", value);
+    setItem(e.target.value);
   };
 
   return (
-    <div className="test">
-      <h1>{query}</h1>
-      <label htmlFor="write">write: </label>
-      <input
-        type="text"
-        placeholder="write"
-        value={query}
-        onChange={handleChange}
-        id="write"
-      />
+    <div>
+      <h1>{item}</h1>
+      <input type="text" value={item} onChange={handleChange} />
+      <h1>hello world</h1>
     </div>
   );
 }
