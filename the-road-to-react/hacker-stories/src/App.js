@@ -1,6 +1,18 @@
 import { useEffect, useState } from "react";
 import "./App.css";
 
+// this is where everthing will get more fun
+const useSemiPersistentState = (key, initialState) => {
+  // good shit
+  const [value, setValue] = useState(localStorage.getItem(key) || initialState);
+
+  useEffect(() => {
+    localStorage.setItem(key, value);
+  }, [value, key]);
+
+  return [value, setValue];
+};
+
 function App() {
   const stories = [
     {
@@ -21,18 +33,10 @@ function App() {
     },
   ];
 
-  // good shit
-  const [searchTerm, setSearchTerm] = useState(
-    localStorage.getItem("search") || "React"
-  );
-
-  useEffect(() => {
-    localStorage.setItem("search", searchTerm);
-  }, [searchTerm]);
+  const [searchTerm, setSearchTerm] = useSemiPersistentState("search", "React");
 
   const handleSearch = (event) => {
     setSearchTerm(event.target.value);
-    // localStorage.setItem("search", event.target.value);
   };
 
   const searchedStories = stories.filter((item) => {
@@ -40,9 +44,15 @@ function App() {
   });
   return (
     <div className="App">
-      <h1>hello there</h1>
+      <h1>My hacker stories</h1>
 
       <Search onSearch={handleSearch} search={searchTerm} />
+      <InputWithLable
+        id="search"
+        label="Search"
+        value={searchTerm}
+        onInputChange={handleSearch}
+      />
 
       <hr />
       <List list={searchedStories} />
@@ -50,13 +60,24 @@ function App() {
   );
 }
 
+// that default part is really nice
+const InputWithLable = ({ id, label, value, type = "text", onInputChange }) => {
+  return (
+    <>
+      <label htmlFor={id}>{label}</label>
+      &nbsp;
+      <input type={type} id={id} value={value} onChange={onInputChange} />
+    </>
+  );
+};
+
 const Search = ({ search, onSearch }) => {
   return (
-    <div>
+    <>
       <h2>{search}</h2>
       <label htmlFor="search">Search: </label>
       <input type="text" id="search" onChange={onSearch} value={search} />
-    </div>
+    </>
   );
 };
 
