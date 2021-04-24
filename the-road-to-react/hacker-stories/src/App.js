@@ -49,10 +49,12 @@ function App() {
       <Search onSearch={handleSearch} search={searchTerm} />
       <InputWithLable
         id="search"
-        label="Search"
         value={searchTerm}
         onInputChange={handleSearch}
-      />
+      >
+        {/* this is sick  */}
+        <strong>2Search:</strong>
+      </InputWithLable>
 
       <hr />
       <List list={searchedStories} />
@@ -61,10 +63,16 @@ function App() {
 }
 
 // that default part is really nice
-const InputWithLable = ({ id, label, value, type = "text", onInputChange }) => {
+const InputWithLable = ({
+  id,
+  value,
+  type = "text",
+  children,
+  onInputChange,
+}) => {
   return (
     <>
-      <label htmlFor={id}>{label}</label>
+      <label htmlFor={id}>{children}</label>
       &nbsp;
       <input type={type} id={id} value={value} onChange={onInputChange} />
     </>
