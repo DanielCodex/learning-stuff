@@ -2,7 +2,14 @@ import React from "react";
 import ReactDOM from "react-dom";
 import "./index.css";
 import reportWebVitals from "./reportWebVitals";
-import App from "./useReducerExample2"; // to be continued
+import App from "./App";
+
+// import App from "./simpleSearch"; // tbc
+
+// import App from "./makeList";
+// import App from "./removeItem";
+// import App from "./useReducerExample2"; // to be continued
+// import App from "./reducerPractice";
 
 // import App from "./useRefExample";
 // import App from "./useRefDomRef";
