@@ -21,16 +21,29 @@ function App() {
   return (
     <div>
       <h1>{click}</h1>
-
-      <input type="text" value={text} onChange={handleChange} />
-      <button type="button" onClick={handleClick}>
-        reverseme
-      </button>
-      <button type="button" onClick={reset}>
-        reset
-      </button>
+      <Form
+        onSubmit={handleClick}
+        text={text}
+        onChange={handleChange}
+        onClick={reset}
+      />
     </div>
   );
 }
+
+const Form = ({ onSubmit, text, onChange, onClick }) => {
+  return (
+    <form onSubmit={onSubmit}>
+      <input type="text" value={text} onChange={onChange} />
+      {/* <button type="button" onClick={handleClick}>
+        // do it either with this button or form 
+        reverseme
+      </button> */}
+      <button type="button" onClick={onClick}>
+        reset
+      </button>
+    </form>
+  );
+};
 
 export default App;
