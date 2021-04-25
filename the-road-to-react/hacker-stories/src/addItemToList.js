@@ -1,4 +1,4 @@
-import React, { useReducer, useState } from "react";
+import React, { useReducer, useState, useRef } from "react";
 import { v4 as uuid4 } from "uuid";
 
 const initialList = [
@@ -16,59 +16,43 @@ const initialList = [
   },
 ];
 
-const listReducer = (state, action) => {
-  switch (action.type) {
-    case "add_item":
-      return state.concat({ name: action.name, id: action.id });
-    default:
-      throw new Error();
-  }
-};
-
 function App() {
+  const [list, setList] = useState(initialList);
   const [name, setName] = useState("");
-  // const [newList, setNewList] = useState(initialList);
+  const inputRef = useRef();
 
-  const [list, dispatchList] = useReducer(listReducer, initialList);
+  function HandleChange(e) {
+    const { value } = e.target;
+    setName(value);
+  }
 
-  const handleChange = (event) => {
-    setName(event.target.value);
-  };
-
-  const addItem = () => {
-    dispatchList({ type: "add_item", name: name, id: uuid4() });
-
-    setName("");
-  };
+  function addItemToList() {
+    // damn that's an improvement
+    if (!inputRef.current.value) {
+      throw new Error("you can't add empty item to the list");
+    } else {
+      // should we add this logic in here ??
+      const addItem = list.concat({
+        name: name.replace(/[^a-zA-Z ]/g, ""), // we should learn more about it
+        id: uuid4(),
+      });
+      setName("");
+      setList(addItem);
+    }
+  }
 
   return (
     <div>
-      <h1>{name}</h1>
-      <AddItem name={name} onChange={handleChange} onAdd={addItem} />
-      <List list={list} />
-    </div>
-  );
-}
-
-const AddItem = ({ name, onChange, onAdd }) => {
-  return (
-    <div>
-      <input type="text" value={name} onChange={onChange} />
-      <button type="button" onClick={onAdd}>
-        click
+      <h1>welcome to my list</h1>
+      <input type="text" value={name} onChange={HandleChange} ref={inputRef} />
+      <button type="button" onClick={addItemToList}>
+        add item to list
       </button>
-    </div>
-  );
-};
-
-const List = ({ list }) => {
-  return (
-    <div>
       {list.map((item) => {
         return <li key={item.id}>{item.name}</li>;
       })}
     </div>
   );
-};
+}
 
 export default App;
