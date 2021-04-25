@@ -2,7 +2,11 @@ import React from "react";
 import ReactDOM from "react-dom";
 import "./index.css";
 import reportWebVitals from "./reportWebVitals";
-import App from "./App";
+// import App from "./App";
+
+// import App from "./reusableComponent";
+// import App from "./componentComposition";
+import App from "./addItemToList";
 
 // import App from "./simpleSearch"; // tbc
 
