@@ -2,23 +2,32 @@ import React, { useState } from "react";
 
 function App() {
   const [text, setText] = useState("");
-  const [reverse, setReverse] = useState("");
+  const [click, setClick] = useState("");
 
   const handleChange = (e) => {
-    setText([...e.target.value].reverse().join(""));
+    setText(e.target.value);
   };
 
-  const handleClick = () => {
-    setReverse(text);
+  const handleClick = (event) => {
+    setClick([...text].reverse().join("")); // it does matter where you do this
+    event.preventDefault();
+  };
+
+  const reset = () => {
+    setText("");
+    setClick("");
   };
 
   return (
     <div>
-      <h1>{reverse}</h1>
-      <label htmlFor="type">Type: </label>
-      <input type="text" onChange={handleChange} id="type" />
+      <h1>{click}</h1>
+
+      <input type="text" value={text} onChange={handleChange} />
       <button type="button" onClick={handleClick}>
-        reverseMe
+        reverseme
+      </button>
+      <button type="button" onClick={reset}>
+        reset
       </button>
     </div>
   );
