@@ -35,26 +35,33 @@ function App() {
     setList(removeItem);
   };
 
-  const addItem = (foo) => {
-    // const newItem = list.concat({ firstname: name });
-    // console.log(name);
+  const addItem = () => {
+    // this looks really bad, but i did it and that's cool
     let splitName = name.split(" ");
     setList(
       list.concat({
         id: uuid4(),
-        firstname: splitName[0],
-        lastname: splitName[1],
-        year: splitName[2],
+        firstname: !splitName[0] ? "" : splitName[0],
+        lastname: !splitName[1] ? "" : splitName[1],
+        year: !splitName[2] ? "" : splitName[2],
       })
     );
+    setName("");
+  };
+
+  const resetList = () => {
+    setList([]);
+    setName("");
   };
 
   return (
     <ul>
-      {/* <h1>{name}</h1> */}
       <input type="text" value={name} onChange={handleChange} />
       <button type="button" onClick={addItem}>
         add new item
+      </button>
+      <button type="button" onClick={resetList}>
+        remove all
       </button>
       {list.map((item) => (
         <li key={item.id}>
