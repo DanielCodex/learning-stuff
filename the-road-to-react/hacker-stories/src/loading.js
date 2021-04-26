@@ -1,18 +1,14 @@
 import React, { useEffect, useState } from "react";
 
 function App() {
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   useEffect(() => {
-    setInterval(() => {
-      setIsLoading(false);
-    }, 1000);
-  });
+    setTimeout(() => {
+      setIsLoading(true);
+    }, 2000);
+  }, []);
 
-  return (
-    <div>
-      {isLoading === false ? <h1>hello world</h1> : <h1>Loading ....</h1>}
-    </div>
-  );
+  return <div>{isLoading ? <p>Hello there</p> : <h2>Loading...</h2>}</div>;
 }
 
 export default App;

@@ -2,11 +2,16 @@ import React from "react";
 import ReactDOM from "react-dom";
 import "./index.css";
 import reportWebVitals from "./reportWebVitals";
-// import App from "./App";
+import App from "./App";
+// import App from "./conditionalRendering";
+// import App from "./hackerNewsApi";
+// import App from "./loading";
+// import App from "./autoFocus";
+// import App from "./componentComposition";
+// import App from "./formConsole";
 
 // import App from "./reusableComponent";
-// import App from "./componentComposition";
-import App from "./addItemToList";
+// import App from "./addItemToList";
 
 // import App from "./simpleSearch"; // tbc
 
@@ -38,7 +43,6 @@ import App from "./addItemToList";
 // import App from "./simpleCounter";
 // import App from "./stopRender";
 // import App from "./fetchData2";
-// import App from "./loading";
 // import App from "./setData";
 
 ReactDOM.render(<App />, document.getElementById("root"));
