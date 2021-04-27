@@ -2,7 +2,14 @@ import React from "react";
 import ReactDOM from "react-dom";
 import "./index.css";
 import reportWebVitals from "./reportWebVitals";
-import App from "./App";
+// import App from "./App";
+
+import App from "./useCallbackLearning";
+
+// import App from "./reducerVsState";
+// import App from "./todoWithReducer";
+
+// import App from "./reducerRobinBlog";
 // import App from "./conditionalRendering";
 // import App from "./hackerNewsApi";
 // import App from "./loading";
