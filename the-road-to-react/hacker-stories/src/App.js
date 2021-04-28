@@ -83,12 +83,14 @@ function App() {
     isError: false,
   });
 
+  const [url, setUrl] = useState(`${API_ENDPOINT}${searchTerm}`);
+
   // what does this do??
   const handleFetchStories = useCallback(() => {
     if (!searchTerm) return;
     dispatchStories({ type: "STORIES_FETCH_INIT" });
 
-    fetch(`${API_ENDPOINT}${searchTerm}`)
+    fetch(url)
       .then((response) => response.json())
       .then((res) => {
         dispatchStories({
@@ -97,7 +99,7 @@ function App() {
         });
       })
       .catch(() => dispatchStories({ type: "STORIES_FETCH_FAILURE" }));
-  }, [searchTerm]);
+  }, [url]);
 
   useEffect(() => {
     handleFetchStories();
@@ -112,6 +114,15 @@ function App() {
     setSearchTerm(event.target.value);
   };
 
+  const handleSearchInput = (event) => {
+    setSearchTerm(event.target.value);
+  };
+
+  const handleSearchSubmit = () => {
+    setUrl(`${API_ENDPOINT}${searchTerm}`);
+  };
+
+  // what happen to this ??
   const searchedStories = stories.data.filter((item) => {
     try {
       return item.title.toLowerCase().includes(searchTerm.toLowerCase());
@@ -127,11 +138,15 @@ function App() {
       <InputWithLable
         id="search"
         value={searchTerm}
-        onInputChange={handleSearch}
+        onInputChange={handleSearchInput}
         isFocused
       >
         <strong>2Search:</strong>
       </InputWithLable>
+
+      <button type="button" onClick={handleSearchSubmit} disabled={!searchTerm}>
+        Submit
+      </button>
 
       <hr />
 
