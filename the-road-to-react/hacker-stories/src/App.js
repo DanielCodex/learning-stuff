@@ -1,6 +1,6 @@
 import { useEffect, useState, useRef, useReducer, useCallback } from "react";
 import axios from "axios";
-import "./App.css";
+// import "./App.css";
 
 // this is where everthing will get more fun
 const useSemiPersistentState = (key, initialState) => {
@@ -120,8 +120,9 @@ function App() {
     setSearchTerm(event.target.value);
   };
 
-  const handleSearchSubmit = () => {
+  const handleSearchSubmit = (event) => {
     setUrl(`${API_ENDPOINT}${searchTerm}`);
+    event.preventDefault();
   };
 
   // what happen to this ??
@@ -136,19 +137,13 @@ function App() {
     <div className="App">
       <h1>My hacker stories</h1>
 
-      <Search onSearch={handleSearch} search={searchTerm} />
-      <InputWithLable
-        id="search"
-        value={searchTerm}
-        onInputChange={handleSearchInput}
-        isFocused
-      >
-        <strong>2Search:</strong>
-      </InputWithLable>
+      {/* <Search onSearch={handleSearch} search={searchTerm} /> */}
 
-      <button type="button" onClick={handleSearchSubmit} disabled={!searchTerm}>
-        Submit
-      </button>
+      <SearchForm
+        searchTerm={searchTerm}
+        onSearchInput={handleSearchInput}
+        onSearchSubmit={handleSearchSubmit}
+      />
 
       <hr />
 
@@ -162,6 +157,25 @@ function App() {
     </div>
   );
 }
+
+const SearchForm = ({ searchTerm, onSearchInput, onSearchSubmit }) => {
+  return (
+    <form onSubmit={onSearchSubmit}>
+      <InputWithLable
+        id="search"
+        value={searchTerm}
+        onInputChange={onSearchInput}
+        isFocused
+      >
+        <strong>Search: </strong>
+      </InputWithLable>
+
+      <button type="submit" disabled={!searchTerm}>
+        Submit
+      </button>
+    </form>
+  );
+};
 
 // that default part is really nice
 const InputWithLable = ({
@@ -220,9 +234,8 @@ const Item = ({ item, onRemoveItem }) => {
     <div key={item.objectID}>
       <span>
         <a href={item.url}>{item.title}</a>
-      </span>
-      <span>{item.author}</span>
-      <span>{item.num_comments}</span>
+      </span>{" "}
+      <span>{item.author}</span> <span>{item.num_comments}</span>{" "}
       <span>{item.points}</span>
       <span>
         <button type="button" onClick={handleRemove}>
