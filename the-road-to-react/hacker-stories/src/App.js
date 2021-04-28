@@ -1,4 +1,5 @@
 import { useEffect, useState, useRef, useReducer, useCallback } from "react";
+import axios from "axios";
 import "./App.css";
 
 // this is where everthing will get more fun
@@ -86,19 +87,21 @@ function App() {
   const [url, setUrl] = useState(`${API_ENDPOINT}${searchTerm}`);
 
   // what does this do??
-  const handleFetchStories = useCallback(() => {
-    if (!searchTerm) return;
+  const handleFetchStories = useCallback(async () => {
+    // i think this should be url
+    // if (!searchTerm) return;
     dispatchStories({ type: "STORIES_FETCH_INIT" });
 
-    fetch(url)
-      .then((response) => response.json())
-      .then((res) => {
-        dispatchStories({
-          type: "STORIES_FETCH_SUCCESS",
-          payload: res.hits,
-        });
-      })
-      .catch(() => dispatchStories({ type: "STORIES_FETCH_FAILURE" }));
+    try {
+      const result = await axios.get(url);
+      dispatchStories({
+        type: "STORIES_FETCH_SUCCESS",
+        payload: result.data.hits,
+      });
+    } catch {
+      // i didn't know this bro
+      dispatchStories({ type: "STORIES_FETCH_FAILURE" });
+    }
   }, [url]);
 
   useEffect(() => {
@@ -113,7 +116,6 @@ function App() {
   const handleSearch = (event) => {
     setSearchTerm(event.target.value);
   };
-
   const handleSearchInput = (event) => {
     setSearchTerm(event.target.value);
   };
