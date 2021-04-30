@@ -1,14 +1,40 @@
-import { useEffect, useState, useRef, useReducer, useCallback } from "react";
+import {
+  useEffect,
+  useState,
+  useRef,
+  useReducer,
+  useCallback,
+  memo,
+} from "react";
 import axios from "axios";
-// import "./App.css";
+import styled from "styled-components";
+// import styles from "./App.module.css";
 
-// this is where everthing will get more fun
+const StyledContainer = styled.div`
+  height: 100vw;
+  padding: 20px;
+  background: #83a4d4;
+  background: linear-gradient(to left, #b6fbff, #83a4d4);
+  color: #171212;
+`;
+
+const StyledHeadlinePrimary = styled.h1`
+  font-size: 48px;
+  font-weight: 300;
+  letter-spacing: 2px;
+`;
+
 const useSemiPersistentState = (key, initialState) => {
-  // good shit
+  const isMounted = useRef(false);
+
   const [value, setValue] = useState(localStorage.getItem(key) || initialState);
 
   useEffect(() => {
-    localStorage.setItem(key, value);
+    if (!isMounted.current) {
+      isMounted.current = true;
+    } else {
+      localStorage.setItem(key, value);
+    }
   }, [value, key]);
 
   return [value, setValue];
@@ -49,6 +75,7 @@ const storiesReducer = (state, action) => {
 
 const API_ENDPOINT = "https://hn.algolia.com/api/v1/search?query=";
 function App() {
+  console.log("B: app");
   const initialStories = [
     {
       title: "React",
@@ -68,15 +95,6 @@ function App() {
     },
   ];
 
-  const getAsyncStories = () =>
-    new Promise((resolve) =>
-      setTimeout(() => resolve({ data: { stories: initialStories } }), 2000)
-    );
-
-  // with this code you will get nothing as a result. it's good for testing
-  // const getAsyncStories = () =>
-  //   new Promise((resolve, reject) => setTimeout(reject, 2000));
-
   const [searchTerm, setSearchTerm] = useSemiPersistentState("search", "React");
   const [stories, dispatchStories] = useReducer(storiesReducer, {
     data: [],
@@ -86,7 +104,6 @@ function App() {
 
   const [url, setUrl] = useState(`${API_ENDPOINT}${searchTerm}`);
 
-  // what does this do??
   const handleFetchStories = useCallback(async () => {
     // i think this should be url
     // if (!searchTerm) return;
@@ -99,7 +116,6 @@ function App() {
         payload: result.data.hits,
       });
     } catch {
-      // i didn't know this bro
       dispatchStories({ type: "STORIES_FETCH_FAILURE" });
     }
   }, [url]);
@@ -108,10 +124,10 @@ function App() {
     handleFetchStories();
   }, [handleFetchStories]);
 
-  const handleRemoveStory = (item) => {
+  const handleRemoveStory = useCallback((item) => {
     console.log(item);
     dispatchStories({ type: "REMOVE_STORIES", payload: item });
-  };
+  }, []);
 
   const handleSearch = (event) => {
     setSearchTerm(event.target.value);
@@ -134,8 +150,8 @@ function App() {
     }
   });
   return (
-    <div className="App">
-      <h1>My hacker stories</h1>
+    <StyledContainer>
+      <StyledHeadlinePrimary>My Hacker storie</StyledHeadlinePrimary>
 
       {/* <Search onSearch={handleSearch} search={searchTerm} /> */}
 
@@ -154,28 +170,40 @@ function App() {
       ) : (
         <List list={stories.data} onRemoveItem={handleRemoveStory} />
       )}
-    </div>
+    </StyledContainer>
   );
 }
 
 const SearchForm = ({ searchTerm, onSearchInput, onSearchSubmit }) => {
   return (
-    <form onSubmit={onSearchSubmit}>
+    <StyledSearchForm onSubmit={onSearchSubmit}>
       <InputWithLable
         id="search"
         value={searchTerm}
-        onInputChange={onSearchInput}
         isFocused
+        onInputChange={onSearchInput}
       >
-        <strong>Search: </strong>
+        <strong>Search:</strong>
       </InputWithLable>
-
-      <button type="submit" disabled={!searchTerm}>
+      <StyledButtonLarge type="submit" disabled={!searchTerm}>
         Submit
-      </button>
-    </form>
+      </StyledButtonLarge>
+    </StyledSearchForm>
   );
 };
+
+const StyledLabel = styled.label`
+  border-top: 1px solid #171212;
+  border-left: 1px solid #171212;
+  padding-left: 5px;
+  font-size: 24px;
+`;
+const StyledInput = styled.input`
+  border: none;
+  border-bottom: 1px solid #171212;
+  background-color: transparent;
+  font-size: 24px;
+`;
 
 // that default part is really nice
 const InputWithLable = ({
@@ -197,16 +225,15 @@ const InputWithLable = ({
 
   return (
     <>
-      <label htmlFor={id}>{children}</label>
+      <StyledLabel htmlFor={id}>{children}</StyledLabel>
       &nbsp;
-      <input
+      <StyledInput
         ref={inputRef}
-        type={type}
         id={id}
+        type={type}
         value={value}
         onChange={onInputChange}
-        autoFocus={isFocused}
-      />
+      ></StyledInput>
     </>
   );
 };
@@ -221,29 +248,69 @@ const Search = ({ search, onSearch }) => {
   );
 };
 
-const List = ({ list, onRemoveItem }) =>
-  list.map((item) => (
-    <Item key={item.objectID} onRemoveItem={onRemoveItem} item={item} />
-  ));
+const List = memo(
+  ({ list, onRemoveItem }) =>
+    console.log("B:List") ||
+    list.map((item) => (
+      <Item key={item.objectID} item={item} onRemoveItem={onRemoveItem} />
+    ))
+);
 
-const Item = ({ item, onRemoveItem }) => {
-  const handleRemove = () => {
-    onRemoveItem(item);
-  };
-  return (
-    <div key={item.objectID}>
-      <span>
-        <a href={item.url}>{item.title}</a>
-      </span>{" "}
-      <span>{item.author}</span> <span>{item.num_comments}</span>{" "}
-      <span>{item.points}</span>
-      <span>
-        <button type="button" onClick={handleRemove}>
-          Dismiss
-        </button>
-      </span>
-    </div>
-  );
-};
+const StyledItem = styled.div`
+  display: flex;
+  align-items: center;
+  padding-bottom: 5px;
+`;
+const StyledColumn = styled.span`
+  padding: 0 5px;
+  white-space: nowrap;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  a {
+    color: inherit;
+  }
+  width: ${(props) => props.width};
+`;
+
+const StyledButton = styled.button`
+  background: transparent;
+  border: 1px solid #171212;
+  padding: 5px;
+  cursor: pointer;
+  transition: all 0.1s ease-in;
+  &:hover {
+    background: #171212;
+    color: #ffffff;
+  }
+`;
+
+const StyledButtonSmall = styled(StyledButton)`
+  padding: 5px;
+`;
+const StyledButtonLarge = styled(StyledButton)`
+  padding: 10px;
+`;
+const StyledSearchForm = styled.form`
+  padding: 10px 0 20px 0;
+  display: flex;
+  align-items: baseline;
+`;
+
+const Item = ({ item, onRemoveItem }) => (
+  <StyledItem>
+    <StyledColumn width="40%">
+      <a href={item.url}>{item.title}</a>
+    </StyledColumn>
+    <StyledColumn width="30%">{item.author}</StyledColumn>
+    <StyledColumn width="10%">{item.num_comments}</StyledColumn>
+    <StyledColumn width="10%">{item.points}</StyledColumn>
+    <StyledColumn width="10%">
+      <StyledButtonSmall type="button" onClick={() => onRemoveItem(item)}>
+        Dismiss
+      </StyledButtonSmall>
+    </StyledColumn>
+  </StyledItem>
+);
 
 export default App;

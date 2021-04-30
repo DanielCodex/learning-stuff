@@ -4,6 +4,8 @@ import "./index.css";
 import reportWebVitals from "./reportWebVitals";
 import App from "./App";
 
+// import App from "./classComponent";
+
 // import App from "./useMemoRobinBlog";
 // import App from "./useCallbackLearning";
 
