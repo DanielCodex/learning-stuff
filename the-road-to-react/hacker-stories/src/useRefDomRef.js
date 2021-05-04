@@ -5,6 +5,7 @@ function App() {
   // return <ComponentWithDomApi label="Label" value="Value" isFocus />;
   return (
     // ah shit it worked lol
+    // you can also write (c) => c
     <ComponentWithDomApi label="Label" value="Value" isFocus={(c) => !!c} />
   );
 }
