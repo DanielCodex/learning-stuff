@@ -24,14 +24,6 @@ function App() {
     });
   }, [search]);
 
-  // const filteredUsers = React.useMemo(() =>
-  //     users.filter((user) => {
-  //       console.log("Filter function is running ...");
-  //       return user.name.toLowerCase().includes(search.toLowerCase());
-  //     }),
-  //   [search]
-  // );
-
   return (
     <div>
       <h1>hello world</h1>
