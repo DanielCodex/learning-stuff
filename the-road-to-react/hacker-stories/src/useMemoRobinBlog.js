@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect, useReducer, useMemo } from "react";
+import React, { useState, useMemo } from "react";
 
 const users = [
   { id: "a", name: "Robin" },

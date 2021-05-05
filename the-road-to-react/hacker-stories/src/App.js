@@ -76,24 +76,24 @@ const storiesReducer = (state, action) => {
 const API_ENDPOINT = "https://hn.algolia.com/api/v1/search?query=";
 function App() {
   console.log("B: app");
-  const initialStories = [
-    {
-      title: "React",
-      url: "https://reactjs.org/",
-      author: "Jordan Walke",
-      num_comments: 3,
-      points: 4,
-      objectID: 0,
-    },
-    {
-      title: "Redux",
-      url: "https://redux.js.org/",
-      author: "Dan Abramov, Andrew Clark",
-      num_comments: 2,
-      points: 5,
-      objectID: 1,
-    },
-  ];
+  // const initialStories = [
+  //   {
+  //     title: "React",
+  //     url: "https://reactjs.org/",
+  //     author: "Jordan Walke",
+  //     num_comments: 3,
+  //     points: 4,
+  //     objectID: 0,
+  //   },
+  //   {
+  //     title: "Redux",
+  //     url: "https://redux.js.org/",
+  //     author: "Dan Abramov, Andrew Clark",
+  //     num_comments: 2,
+  //     points: 5,
+  //     objectID: 1,
+  //   },
+  // ];
 
   const [searchTerm, setSearchTerm] = useSemiPersistentState("search", "React");
   const [stories, dispatchStories] = useReducer(storiesReducer, {
@@ -129,9 +129,9 @@ function App() {
     dispatchStories({ type: "REMOVE_STORIES", payload: item });
   }, []);
 
-  const handleSearch = (event) => {
-    setSearchTerm(event.target.value);
-  };
+  // const handleSearch = (event) => {
+  //   setSearchTerm(event.target.value);
+  // };
   const handleSearchInput = (event) => {
     setSearchTerm(event.target.value);
   };
@@ -142,13 +142,13 @@ function App() {
   };
 
   // what happen to this ??
-  const searchedStories = stories.data.filter((item) => {
-    try {
-      return item.title.toLowerCase().includes(searchTerm.toLowerCase());
-    } catch (error) {
-      console.log(error);
-    }
-  });
+  // const searchedStories = stories.data.filter((item) => {
+  //   try {
+  //     return item.title.toLowerCase().includes(searchTerm.toLowerCase());
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // });
   return (
     <StyledContainer>
       <StyledHeadlinePrimary>My Hacker storie</StyledHeadlinePrimary>
@@ -238,15 +238,15 @@ const InputWithLable = ({
   );
 };
 
-const Search = ({ search, onSearch }) => {
-  return (
-    <>
-      <h2>{search}</h2>
-      <label htmlFor="search">Search: </label>
-      <input type="text" id="search" onChange={onSearch} value={search} />
-    </>
-  );
-};
+// const Search = ({ search, onSearch }) => {
+//   return (
+//     <>
+//       <h2>{search}</h2>
+//       <label htmlFor="search">Search: </label>
+//       <input type="text" id="search" onChange={onSearch} value={search} />
+//     </>
+//   );
+// };
 
 const List = memo(
   ({ list, onRemoveItem }) =>
@@ -314,3 +314,5 @@ const Item = ({ item, onRemoveItem }) => (
 );
 
 export default App;
+// for testing
+export { SearchForm, InputWithLable, List, Item };
