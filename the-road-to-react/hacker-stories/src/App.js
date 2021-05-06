@@ -300,7 +300,7 @@ const StyledSearchForm = styled.form`
 const Item = ({ item, onRemoveItem }) => (
   <StyledItem>
     <StyledColumn width="40%">
-      <a href={item.url}>{item.title}</a>
+      <a href={item.url}>{item.title} little</a>
     </StyledColumn>
     <StyledColumn width="30%">{item.author}</StyledColumn>
     <StyledColumn width="10%">{item.num_comments}</StyledColumn>
