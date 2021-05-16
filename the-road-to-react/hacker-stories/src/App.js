@@ -12,7 +12,7 @@ import styled from "styled-components";
 
 const StyledContainer = styled.div`
   height: 100vw;
-  padding: 20px;
+  padding: 20px; // this is really cool
   background: #83a4d4;
   background: linear-gradient(to left, #b6fbff, #83a4d4);
   color: #171212;
@@ -29,6 +29,7 @@ const useSemiPersistentState = (key, initialState) => {
 
   const [value, setValue] = useState(localStorage.getItem(key) || initialState);
 
+  // use it only on update
   useEffect(() => {
     if (!isMounted.current) {
       isMounted.current = true;
