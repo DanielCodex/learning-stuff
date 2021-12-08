@@ -28,8 +28,8 @@ def find_dat_item(arr: list, item: int) -> int:
     return None
 
 
-x = [1, 2, 3, 4, 5, 6]
-# print(find_dat_item(x, 5))
+x = [1, 2, 3, 4, 5, 6, 7, 8, 9]
+print(find_dat_item(x, 4))
 
 
 def binary_with_recursion(arr: list, low: int, high: int, item: int) -> int:
