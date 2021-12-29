@@ -15,6 +15,7 @@ def ln(x):
 
 print([i for i in range(0, 10)])
 
+# hello htere :sim
 
 # print(log(4, 2))
 # if you have arrays of number
