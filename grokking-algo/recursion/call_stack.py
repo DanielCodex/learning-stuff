@@ -1,17 +1,18 @@
 
 
-def greet(name: str):
-    print("first print from greet")
+def greet(name):
+    print(f"hello {name}")
     greet2(name)
-    print("second print from greet")
+    print('getting ready to say goodbye')
     bye()
 
 
-def greet2(name: str):
-    print("in which order we came out")
-
-    def bye():
-        print("i should be the final one")
+def greet2(name):
+    print(f"how are you {name}")
 
 
-print(greet('he'))
+def bye():
+    print('okay bye')
+
+
+print(greet('daniel'))
