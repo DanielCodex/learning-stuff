@@ -1,0 +1,5 @@
+test
+DEBUG:root:this message should go to that file
+INFO:root:so should this
+WARNING:root:and this
+ERROR:root:And non-ASCII stuff, too, like Øresund and Malmö

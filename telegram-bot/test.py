@@ -20,9 +20,15 @@ def start(update: Updater, context: CallbackContext):
         chat_id=update.effective_chat.id, text="i'm bot, please talk to me")
 
 
+start_handler = CommandHandler("start", start)
+
+
 def echo(update: Updater, context: CallbackContext):
     context.bot.send_message(
         chat_id=update.effective_chat.id, text=update.message.text)
+
+
+echo_handler = MessageHandler(Filters.text & (~Filters.command), echo)
 
 
 def caps(update: Updater, context: CallbackContext):
@@ -37,6 +43,7 @@ def inline_caps(update: Updater, context: CallbackContext):
         return
     result = []
 
+    # result is shown in array,
     result.append(
         InlineQueryResultArticle(
             id=query.upper(),
@@ -48,19 +55,17 @@ def inline_caps(update: Updater, context: CallbackContext):
     context.bot.answer_inline_query(update.inline_query.id, result)
 
 
+inline_caps_handler = InlineQueryHandler(inline_caps)
+
+
 def unknown(update: Updater, context: CallbackContext):
     context.bot.send_message(
         chat_id=update.effective_chat.id, text="sorry, didn't understand that command")
 
 
-# the second one is the function that we wrote
-inline_caps_handler = InlineQueryHandler(inline_caps)
-
-start_handler = CommandHandler("start", start)
 caps_handler = CommandHandler('caps', caps)
-
 unknown_handler = MessageHandler(Filters.command, unknown)
-echo_handler = MessageHandler(Filters.text & (~Filters.command), echo)
+# the second one is the function that we wrote
 
 
 # dispatcher (it's like redux)
