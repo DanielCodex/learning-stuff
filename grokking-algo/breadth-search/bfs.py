@@ -1,3 +1,5 @@
+from collections import deque
+import queue
 
 tree = {
     'A': ['B', 'C'],
@@ -10,17 +12,7 @@ tree = {
 }
 
 
+# why nothing is working
 def bfs(tree: dict, rootNode: int, searchValue: str) -> str:
-    queue = []
-    # start the search from the right spot
-    queue.append(rootNode)
-
-    while len(queue) > 0:
-        current_node = queue[0]
-
-        if current_node == searchValue:
-            print("we found it")
-            return
-
-        if len(current_node) != 0:
-            queue.append(tree)
+    queue_list = deque()
+    pass
