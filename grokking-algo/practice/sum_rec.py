@@ -1,8 +1,8 @@
 
 
 def sum_array(arr: list) -> int:
-    if len(arr) == 0:
-        return 0
+    if len(arr) == 1:
+        return arr
     else:
         return arr[0] + sum_array(arr[1:])
 

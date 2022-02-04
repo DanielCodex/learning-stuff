@@ -1,21 +1,41 @@
 from collections import deque
 
-def bfs(graph, root):
+def bfs(graph, root, target_node):
     visited = set()
     queue = deque()
 
+    # we start from root node 
     visited.add(root)
     queue.append(root)
-    print(queue)
 
-    while queue:
+    # root node doesn't have parents
+    # and we use this for path reconstruction
+    parent = dict()
+    parent[root] = None
+
+    path_found = False
+    while len(queue) > 0:
         current_node = queue.popleft()
-        print(f"{current_node}", end=" ")
+
+        if current_node == target_node:
+            path_found = True 
+            break
 
         for neighbour in graph[current_node]:
             if neighbour not in visited:
                 visited.add(neighbour)
+                parent[neighbour] = current_node
                 queue.append(neighbour)
+
+    path = []
+    if path_found:
+        path.append(target_node)
+        while parent[target_node] is not None:
+            path.append(parent[target_node])
+            target_node = parent[target_node] 
+        path.reverse()
+    
+    return path
 
 
 graph = {
@@ -26,5 +46,5 @@ graph = {
     5: [1, 4, 6],
     6: [3, 4, 5]
 }
-print(bfs(graph, 1))
-# print(bfs(graph, 1, 6))
+# print(bfs(graph, 1))
+print(bfs(graph, 1, 6))
